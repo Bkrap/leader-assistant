@@ -7,9 +7,10 @@ import toast from "react-hot-toast";
 import SpeechGenerator from "./SpeechGenerator";
 import { debounce } from "lodash";
 import AudioRecorderComponent from "./AudioRecorderComponent";
+import Choice from "./Choice";
 
 
-function ChatContainer() {
+function ChatContainer({ selectedOutput }) {
   // Atom State
   const [thread] = useAtom(threadAtom);
   const [messages, setMessages] = useAtom(messagesAtom);
@@ -22,6 +23,12 @@ function ChatContainer() {
   const handleTranscriptionComplete = (transcription: string) => {
     setMessage(transcription);
   };
+
+  const [ setselectedOutput] = useState(''); // Initialize with the default value 'text'
+  const handleChoiceChange = (choice: string) => {
+    setselectedOutput(choice);
+  };
+  console.log("selectedOutput", handleChoiceChange);
 
   // const [latestAIMessage, setLatestAIMessage] = useState('');
 
@@ -90,6 +97,7 @@ function ChatContainer() {
     debouncedSendMessage();
   };
   return (
+    console.log("selectedOutput", selectedOutput),
     <div style={{ height: "500px" }} className="flex flex-col w-full h-full max-h-screen rounded-lg border-blue-200 border-solid border-2 p-10">
       {/* Messages */}
       <div className="flex flex-col h-full max-h-[calc(100vh-400px)] overflow-y-auto border-blue-200 border-solid border-2 p-6 rounded-lg">
@@ -106,35 +114,46 @@ function ChatContainer() {
                 : " bg-gray-500"
             }`}
           >
-            { 1 > 2 ? ( 
-              message.content[0].type === "text"
-                ? message.content[0].text.value
-                : null
-            ) : ( 
-              <SpeechGenerator textData={message.content[0].text.value} />
-            ) }
+          { selectedOutput === "text" 
+            ? (message.content[0].type === "text" 
+                ? message.content[0].text.value 
+                : null)
+            : selectedOutput === "voice" 
+              ? <SpeechGenerator textData={message.content[0].text.value} />
+              : <SpeechGenerator textData={message.content[0].text.value} /> 
+            ? (selectedOutput === "both" ? <SpeechGenerator textData={message.content[0].text.value} /> : null) 
+            : null
+          }
           </div>
         ))}
       </div>
 
       {/* Input */}
-      <div className="flex flex-row w-full mt-5">
+      <div className="flex flex-col w-full mt-5">
       <AudioRecorderComponent onTranscriptionComplete={handleTranscriptionComplete} />
-        <input
-          type="text"
+      <div className="flex flex-row w-full mt-5">
+
+        <textarea
           className="flex-grow rounded-lg border-blue-200 border-solid border-2 p-2"
+          placeholder="Type a message..."
+          rows={4}
+          cols={50}
           value={message}
           onChange={(e) => setMessage(e.target.value)}
         />
         <button
           disabled={!thread || sending || message === ""}
           className="rounded-lg bg-blue-500 text-white p-2 ml-4 disabled:bg-blue-200"
+          style={{ height: "50px" }}
           onClick={() => {
             sendMessage();
           }}
         >
           Send
         </button>
+      </div>
+              {/* Input */}
+
       </div>
     </div>
   );

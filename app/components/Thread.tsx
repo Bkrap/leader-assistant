@@ -66,7 +66,7 @@ function Thread() {
   return (
     <div className="flex flex-col mb-8">
       <h1 className="text-4xl font-semibold mb-4">Thread</h1>
-      <div className="flex flex-row gap-x-4 w-full">
+      <div className="flex flex-row gap-x-4 w-full flex-wrap flex-col gap-y-2">
         <Button onClick={handleCreate}>
           {creating ? "Creating..." : "Create"}
         </Button>

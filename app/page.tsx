@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState  } from "react";
 import Assistant from "./components/Assistant";
 import SpeechGenerator from "./components/SpeechGenerator";
 import AudioRecorderComponent from "./components/AudioRecorderComponent";
 import AssistantFile from "./components/AssistantFile";
 import Header from "./components/Header";
+import Choice from "./components/Choice";
 import { useAtom } from "jotai";
 import {
   assistantAtom,
@@ -19,6 +20,7 @@ import {
 import Thread from "./components/Thread";
 import Run from "./components/Run";
 import ChatContainer from "./components/ChatContainer";
+import AdminContent from "./components/AdminContent";
 
 export default function Home() {
   // Atom State
@@ -28,7 +30,11 @@ export default function Home() {
   const [, setThread] = useAtom(threadAtom);
   const [, setRun] = useAtom(runAtom);
   const [, setRunState] = useAtom(runStateAtom);
+  const [selectedOutput, setselectedOutput] = useState('text');
 
+  const handleChoiceChange = (choice: string) => {
+    setselectedOutput(choice);
+  };
   // Load default data
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -65,15 +71,14 @@ export default function Home() {
       <div className="flex flex-col mt-20 gap-x-10">
         {/* Actions */}
         <div className="flex flex-col w-full">
-          <Assistant />
-          <AssistantFile />
-          {/* <SpeechGenerator textData={"Here we will pass assistant text message"} /> */}
-          <Thread />
-          <Run />
+
+          <AdminContent />
+
+          <Choice selectedOutput={selectedOutput} onChange={handleChoiceChange} />
         </div>
         {/* Chat */}
         <div className="w-full">
-          <ChatContainer />
+          <ChatContainer selectedOutput={selectedOutput} />
         </div>
       </div>
     </main>
