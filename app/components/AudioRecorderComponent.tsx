@@ -37,7 +37,7 @@ const AudioRecorderComponent: React.FC<AudioRecorderComponentProps> = ({ onTrans
       });
 
       if (!response.ok) {
-        throw new Error(response);
+        // throw new Error(response);
         console.log("response.status", response.status);
       }
 

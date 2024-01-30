@@ -10,7 +10,7 @@ import AudioRecorderComponent from "./AudioRecorderComponent";
 import Choice from "./Choice";
 
 
-function ChatContainer({ selectedOutput }) {
+function ChatContainer({ selectedOutput }: { selectedOutput: string }) {
   // Atom State
   const [thread] = useAtom(threadAtom);
   const [messages, setMessages] = useAtom(messagesAtom);
