@@ -12,7 +12,7 @@ const SpeechGenerator: React.FC<SpeechGeneratorProps> = ({ textData }) => {
       const response = await fetch('https://api.openai.com/v1/audio/speech', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer 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`,
+          'Authorization': `Bearer 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`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({

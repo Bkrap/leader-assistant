@@ -2,7 +2,7 @@ import OpenAI from "openai";
 
 export async function GET() {
   const openai = new OpenAI();
-  const secretKey = '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';
+  const secretKey = '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';
   // const openai = new OpenAI({
   //   apiKey: secretKey,
   //   dangerouslyAllowBrowser: true,

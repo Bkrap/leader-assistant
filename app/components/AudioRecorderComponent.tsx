@@ -31,7 +31,7 @@ const AudioRecorderComponent: React.FC<AudioRecorderComponentProps> = ({ onTrans
       const response = await fetch('https://api.openai.com/v1/audio/translations', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer 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`,
+          'Authorization': `Bearer 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`,
         },
         body: formData
       });
