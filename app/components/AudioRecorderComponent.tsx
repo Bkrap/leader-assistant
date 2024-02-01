@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import useAudioRecorder from './useAudioRecorder';
 import SpeechGenerator from './SpeechGenerator';
-import recPlay from '../public/recPlay.png';
+import recPlay from '../../public/recPlay.png';
 
 interface AudioRecorderComponentProps {
   onTranscriptionComplete: (transcription: string) => void;
