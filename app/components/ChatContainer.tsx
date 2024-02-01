@@ -24,11 +24,11 @@ function ChatContainer({ selectedOutput }: { selectedOutput: string }) {
     setMessage(transcription);
   };
 
-  const [ setSelectedOutput ] = useState('text'); // Initialize with the default value 'text'
-  const handleChoiceChange = (choice: string) => {
-    setSelectedOutput(choice);
-  };
-  console.log("selectedOutput", handleChoiceChange);
+  // const [ setSelectedOutput ] = useState('text'); // Initialize with the default value 'text'
+  // const handleChoiceChange = (choice: string) => {
+  //   setSelectedOutput(choice);
+  // };
+  // console.log("selectedOutput", handleChoiceChange);
 
   // const [latestAIMessage, setLatestAIMessage] = useState('');
 
