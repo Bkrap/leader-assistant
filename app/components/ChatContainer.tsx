@@ -24,9 +24,9 @@ function ChatContainer({ selectedOutput }: { selectedOutput: string }) {
     setMessage(transcription);
   };
 
-  const [ setselectedOutput] = useState(''); // Initialize with the default value 'text'
+  const [ setSelectedOutput ] = useState('text'); // Initialize with the default value 'text'
   const handleChoiceChange = (choice: string) => {
-    setselectedOutput(choice);
+    setSelectedOutput(choice);
   };
   console.log("selectedOutput", handleChoiceChange);
 
