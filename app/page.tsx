@@ -5,6 +5,7 @@ import Assistant from "./components/Assistant";
 import SpeechGenerator from "./components/SpeechGenerator";
 import AudioRecorderComponent from "./components/AudioRecorderComponent";
 import AssistantFile from "./components/AssistantFile";
+import TalkingAvatar from './components/TalkingAvatar';
 import Header from "./components/Header";
 import Choice from "./components/Choice";
 import { useAtom } from "jotai";
@@ -75,6 +76,8 @@ export default function Home() {
           <AdminContent />
 
           <Choice selectedOutput={selectedOutput} onChange={handleChoiceChange} />
+          <h1>Talking Avatar Demo</h1>
+          <TalkingAvatar />
         </div>
         {/* Chat */}
         <div className="w-full">

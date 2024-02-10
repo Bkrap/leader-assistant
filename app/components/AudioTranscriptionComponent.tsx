@@ -22,7 +22,7 @@ const AudioTranscriptionComponent: React.FC = () => {
       const response = await fetch('https://api.openai.com/v1/audio/speech', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer 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`
+          'Authorization': `Bearer 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`
         },
         body: JSON.stringify(payload)
       });
