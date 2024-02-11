@@ -7,12 +7,23 @@ import toast from "react-hot-toast";
 import SpeechGenerator from "./SpeechGenerator";
 import { debounce } from "lodash";
 import AudioRecorderComponent from "./AudioRecorderComponent";
-import { fetchAvatar } from './fetchAvatar'; 
-import Choice from "./Choice";
 import { avatarUrlAtom } from '../state/atoms';
 import { runTriggerAtom } from '../state/atoms';
 
+// import { fetchAvatar } from './fetchAvatar'; 
+import Choice from "./Choice";
 // export const avatarUrlAtom = atom('');
+// interface MessageContentText {
+//   type: 'text';
+//   text: { value: string };
+// }
+
+// interface MessageContentImageFile {
+//   type: 'image' | 'file';
+//   url: string; // Assuming this is correct for image/file content
+// }
+
+// type MessageContent = MessageContentText | MessageContentImageFile;
 
 function ChatContainer({ selectedOutput }: { selectedOutput: string }) {
   // Atom State
@@ -28,7 +39,11 @@ function ChatContainer({ selectedOutput }: { selectedOutput: string }) {
   const [, setAvatarUrl] = useAtom(avatarUrlAtom); 
   // const [lastRunTrigger, setLastRunTrigger] = useState(runTrigger);
   const [, setRunTrigger] = useAtom(runTriggerAtom);
-  const chatEndRef = useRef(null); 
+  const chatEndRef = useRef<HTMLDivElement>(null);
+
+  function isMessageContentText(content: any): content is { type: 'text', text: { value: string } } {
+    return content && content.type === 'text' && typeof content.text === 'object' && 'value' in content.text;
+  }
 
   const triggerRunCreate = () => {
     setRunTrigger((current) => current + 1);
@@ -36,14 +51,6 @@ function ChatContainer({ selectedOutput }: { selectedOutput: string }) {
   const handleTranscriptionComplete = (transcription: string) => {
     setMessage(transcription);
   };
-
-  // const [ setSelectedOutput ] = useState('text'); // Initialize with the default value 'text'
-  // const handleChoiceChange = (choice: string) => {
-  //   setSelectedOutput(choice);
-  // };
-  // console.log("selectedOutput", handleChoiceChange);
-
-  // const [latestAIMessage, setLatestAIMessage] = useState('');
 
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -146,11 +153,6 @@ function ChatContainer({ selectedOutput }: { selectedOutput: string }) {
   // Debounced sendMessage function
   const debouncedSendMessage = debounce(sendMessage, 500); // Adjust the debounce delay as needed
 
-      // Input change handler with debounced sendMessage
-  const handleMessageChange = (e) => {
-    setMessage(e.target.value);
-    debouncedSendMessage();
-  };
   return (
     // console.log("selectedOutput", selectedOutput),
     <div className="flex flex-col w-full h-full max-h-screen rounded-lg border-blue-200 border-solid border-2 p-10">
@@ -169,17 +171,15 @@ function ChatContainer({ selectedOutput }: { selectedOutput: string }) {
                 : " bg-gray-500"
             }`}
           >
-          { selectedOutput === "text" 
-            ? (message.content[0].type === "text" 
-                ? message.content[0].text.value 
-                : null)
-            : selectedOutput === "voice" 
-              ? <SpeechGenerator textData={message.content[0].text.value} />
-              : <SpeechGenerator textData={message.content[0].text.value} /> 
-            ? (selectedOutput === "both" ? <SpeechGenerator textData={message.content[0].text.value} /> : null) 
-            : null
-          }
+          {selectedOutput === "text" && isMessageContentText(message.content[0]) ? (
+            message.content[0].text.value
+          ) : selectedOutput === "voice" || selectedOutput === "both" ? (
+            isMessageContentText(message.content[0]) ? (
+              <SpeechGenerator textData={message.content[0].text.value} />
+            ) : null // Handle non-text message content appropriately
+          ) : null}
           </div>
+
         ))}
          <div ref={chatEndRef} />
       </div>

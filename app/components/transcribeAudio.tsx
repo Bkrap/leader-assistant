@@ -15,7 +15,7 @@
 //       let response = await fetch('https://api.openai.com/v1/audio/', {
 //         method: 'POST',
 //         headers: {
-//             'Authorization': `Bearer ${OPENAI_API_KEY}`,	
+//             'Authorization': `Bearer ${NEXT_PUBLIC_OPENAI_API_KEY}`,	
 //             'Content-Type': 'application/json'
 //         },
 //         body: JSON.stringify({

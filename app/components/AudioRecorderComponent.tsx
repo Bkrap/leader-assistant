@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import useAudioRecorder from './useAudioRecorder';
 import SpeechGenerator from './SpeechGenerator';
 import recPlay from '../../public/recPlay.png';
+import dotenv from 'dotenv';
 
+dotenv.config();
 interface AudioRecorderComponentProps {
   onTranscriptionComplete: (transcription: string) => void;
 }
@@ -31,7 +33,7 @@ const AudioRecorderComponent: React.FC<AudioRecorderComponentProps> = ({ onTrans
       const response = await fetch('https://api.openai.com/v1/audio/translations', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer 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`,
+          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_OPENAI_API_KEY}`,
         },
         body: formData
       });
@@ -40,7 +42,7 @@ const AudioRecorderComponent: React.FC<AudioRecorderComponentProps> = ({ onTrans
         // throw new Error(response);
         console.log("response.status", response.status);
       }
-console.log(recPlay);
+      // console.log(recPlay);
       const result = await response.json();
       console.log("API Response:", result); // Check the structure of the response
       setTranscription(result.text); // Adjust based on the actual response structure

@@ -13,7 +13,7 @@ const useAudioRecorder = () => {
       const newRecorder = new MediaRecorder(stream);
       setRecorder(newRecorder);
 
-      let audioChunks = [];
+      let audioChunks: BlobPart[] = [];
 
       newRecorder.ondataavailable = e => {
         audioChunks.push(e.data);

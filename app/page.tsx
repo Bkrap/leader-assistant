@@ -1,5 +1,5 @@
 "use client";
-import MmenuWrapper from './components/MmenuWrapper';
+// import MmenuWrapper from './components/MmenuWrapper';
 import { useEffect, useState  } from "react";
 import Assistant from "./components/Assistant";
 import SpeechGenerator from "./components/SpeechGenerator";
@@ -80,8 +80,8 @@ export default function Home() {
       <div className="flex flex-col mt-20 gap-x-10">
         {/* Actions */}
         <div className="flex flex-col w-full">
-        {/* <MmenuWrapper /> */}
-          {/* <AdminContent /> */}
+          {/* <MmenuWrapper /> */}
+          <AdminContent />
 
           <Choice selectedOutput={selectedOutput} onChange={handleChoiceChange} />
           {/* <h1>Talking Avatar Demo</h1>
