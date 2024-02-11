@@ -4,6 +4,7 @@ import {
   runAtom,
   runStateAtom,
   threadAtom,
+  // runTriggerAtom, 
 } from "@/atom";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
@@ -12,6 +13,8 @@ import React, { useEffect, useState } from "react";
 import { Run } from "openai/resources/beta/threads/runs/runs.mjs";
 import toast from "react-hot-toast";
 import { ThreadMessage } from "openai/resources/beta/threads/messages/messages.mjs";
+import { runTriggerAtom } from '../state/atoms';
+
 
 function Run() {
   // Atom State
@@ -20,19 +23,29 @@ function Run() {
   const [, setMessages] = useAtom(messagesAtom);
   const [assistant] = useAtom(assistantAtom);
   const [runState, setRunState] = useAtom(runStateAtom);
-
+  // const [, setRunTrigger] = useAtom(runTriggerAtom);
+  // const [, runTrigger] = useAtom(runTriggerAtom);
+  const [runTrigger, setRunTrigger] = useAtom(runTriggerAtom); // Correctly destructure to use both getter and setter
   // State
   const [creating, setCreating] = useState(false);
   const [canceling, setCanceling] = useState(false);
   const [pollingIntervalId, setPollingIntervalId] =
     useState<NodeJS.Timeout | null>(null);
 
-  useEffect(() => {
-    // Clean up polling on unmount
-    return () => {
-      if (pollingIntervalId) clearInterval(pollingIntervalId);
-    };
-  }, [pollingIntervalId]);
+    useEffect(() => {
+      if (creating) {
+        return;
+      }
+      const createRunIfNotInProgress = async () => {
+        console.log("this is run", run)
+        // if (run) {
+          // if( run.completed_at !== null ) {
+            await handleCreate();
+          // }
+        // }
+      };
+      createRunIfNotInProgress();
+    }, [runTrigger]); 
 
   const startPolling = (runId: string) => {
     if (!thread) return;
@@ -75,15 +88,17 @@ function Run() {
       );
 
       const newRun = response.data.run;
-      setRunState(newRun.status);
-      setRun(newRun);
-      toast.success("Run created", { position: "bottom-center" });
-      localStorage.setItem("run", JSON.stringify(newRun));
-
-      // Start polling after creation
-      startPolling(newRun.id);
+      if( newRun ) {
+        setRunState(newRun.status);
+        setRun(newRun);
+        toast.success("Run created", { position: "bottom-center" });
+        localStorage.setItem("run", JSON.stringify(newRun));
+        // Start polling after creation
+        startPolling(newRun.id);
+        setRunTrigger((oldTrigger: number) => oldTrigger + 1); // Increment trigger to signal an update
+      }
     } catch (error) {
-      toast.error("Error creating run.", { position: "bottom-center" });
+      toast.error("Error creating run. Check Assistant API", { position: "bottom-center" });
       console.error(error);
     } finally {
       setCreating(false);

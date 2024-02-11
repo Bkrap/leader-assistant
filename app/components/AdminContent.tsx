@@ -23,7 +23,7 @@ const AdminContent = () => {
   }, []);
 
   return (
-    <div id="accordion-collapse" className='mb-4' data-accordion="collapse">
+    <div className='mb-4'>
         <h2 id="accordion-collapse-heading-1">
         <button type="button" className="flex items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 border border-b-0 border-gray-200 rounded-t-xl focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-800 dark:border-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 gap-3" data-accordion-target="#accordion-collapse-body-1" aria-expanded="true" aria-controls="accordion-collapse-body-1">
             <span>Open Actions Menu</span>
@@ -32,7 +32,6 @@ const AdminContent = () => {
             </svg>
         </button>
         </h2>
-        <div id="accordion-collapse-body-1" className="hidden" aria-labelledby="accordion-collapse-heading-1">
         <div className="p-5 border border-b-0 border-gray-200 dark:border-gray-700 dark:bg-gray-900">
           <div className="flex flex-row gap-x-10">
                 <Assistant />
@@ -41,7 +40,6 @@ const AdminContent = () => {
                 <Thread />
                 <Run />
             </div>
-        </div>
         </div>
     </div>
   );

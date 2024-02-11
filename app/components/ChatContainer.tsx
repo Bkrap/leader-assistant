@@ -1,25 +1,38 @@
 import { messagesAtom, threadAtom } from "@/atom";
 import axios from "axios";
-import { useAtom } from "jotai";
+import { useAtom, atom  } from "jotai";
 import { ThreadMessage } from "openai/resources/beta/threads/messages/messages.mjs";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef  } from "react";
 import toast from "react-hot-toast";
 import SpeechGenerator from "./SpeechGenerator";
 import { debounce } from "lodash";
 import AudioRecorderComponent from "./AudioRecorderComponent";
+import { fetchAvatar } from './fetchAvatar'; 
 import Choice from "./Choice";
+import { avatarUrlAtom } from '../state/atoms';
+import { runTriggerAtom } from '../state/atoms';
 
+// export const avatarUrlAtom = atom('');
 
 function ChatContainer({ selectedOutput }: { selectedOutput: string }) {
   // Atom State
   const [thread] = useAtom(threadAtom);
   const [messages, setMessages] = useAtom(messagesAtom);
-
+  const [avatarVideos, setAvatarVideos] = useState({});
   // State
   const [message, setMessage] = useState("");
   const [sending, setSending] = useState(false);
   const [fetching, setFetching] = useState(false);
 
+  // Example of updating the atom inside ChatContainer
+  const [, setAvatarUrl] = useAtom(avatarUrlAtom); 
+  // const [lastRunTrigger, setLastRunTrigger] = useState(runTrigger);
+  const [, setRunTrigger] = useAtom(runTriggerAtom);
+  const chatEndRef = useRef(null); 
+
+  const triggerRunCreate = () => {
+    setRunTrigger((current) => current + 1);
+  };
   const handleTranscriptionComplete = (transcription: string) => {
     setMessage(transcription);
   };
@@ -33,26 +46,41 @@ function ChatContainer({ selectedOutput }: { selectedOutput: string }) {
   // const [latestAIMessage, setLatestAIMessage] = useState('');
 
   useEffect(() => {
+    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
+  useEffect(() => {
     const fetchMessages = async () => {
       setFetching(true);
       if (!thread) return;
 
       try {
-        axios
-          .get<{ messages: ThreadMessage[] }>(
-            `/api/message/list?threadId=${thread.id}`
-          )
-          .then((response) => {
-            let newMessages = response.data.messages;
+        const response = await axios.get<{ messages: ThreadMessage[] }>(
+          `/api/message/list?threadId=${thread.id}`
+        );
+  
+        // Now access the `messages` property from `response.data`
+        const sortedMessages = response.data.messages.sort(
+          (a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+        );
+  
+        setMessages(sortedMessages);
+  
+      // Check if there are any messages to process / talks / generate avatar
+      // if (sortedMessages.length > 0) {
+      //   // Access the last message directly
+      //   const lastMessage = sortedMessages[sortedMessages.length - 1];
+      //   if (lastMessage.content[0]?.type === 'text') {
+      //       // Then, inside your avatar fetch logic, update the atom
+      //       fetchAvatar(lastMessage.content[0].text.value).then(videoUrl => {
+      //         setAvatarUrl(videoUrl); // Update the atom with the new URL
+      //         // Existing logic to update local state...
+      //       }).catch(error => {
+      //         console.error("Error generating avatar for last message:", error);
+      //       });
+      //   }
+      // }
 
-            // Sort messages in descending order by createdAt
-            newMessages = newMessages.sort(
-              (a, b) =>
-                new Date(a.created_at).getTime() -
-                new Date(b.created_at).getTime()
-            );
-            setMessages(newMessages);
-          });
       } catch (error) {
         console.log("error", error);
         toast.error("Error fetching messages", { position: "bottom-center" });
@@ -63,6 +91,32 @@ function ChatContainer({ selectedOutput }: { selectedOutput: string }) {
 
     fetchMessages();
   }, [thread]);
+    // This function should be async if it's making HTTP requests
+  //   const fetchLastAssistantMessageAndUpdateAvatar = async () => {
+  //     if (!thread) return;
+  
+  //     try {
+  //       const { data } = await axios.get<{ messages: ThreadMessage[] }>(
+  //         `/api/message/list?threadId=${thread.id}`
+  //       );
+  
+  //       const assistantMessages = data.messages.filter(msg => msg.role === "assistant");
+  //       const lastAssistantMessage = assistantMessages[assistantMessages.length - 1];
+  
+  //       if (lastAssistantMessage && lastAssistantMessage.content[0]?.type === 'text') {
+  //         fetchAvatar(lastAssistantMessage.content[0].text.value).then(videoUrl => {
+  //           setAvatarUrl(videoUrl);
+  //         }).catch(error => {
+  //           console.error("Error generating avatar for last assistant message:", error);
+  //         });
+  //       }
+  //     } catch (error) {
+  //       console.error("Error in fetching messages:", error);
+  //     }
+  //   };
+  
+  //   fetchLastAssistantMessageAndUpdateAvatar();
+  // }, [runTrigger, setAvatarUrl, thread]);
 
   const sendMessage = async () => {
     if (!thread) return;
@@ -78,9 +132,10 @@ function ChatContainer({ selectedOutput }: { selectedOutput: string }) {
       console.log("newMessage", newMessage);
       setMessages([...messages, newMessage]);
       setMessage("");
-      toast.success("Successfully sent message", {
+      toast.success("Successf lly sent message", {
         position: "bottom-center",
       });
+      triggerRunCreate();
     } catch (error) {
       console.log("error", error);
       toast.error("Error sending message", { position: "bottom-center" });
@@ -97,10 +152,10 @@ function ChatContainer({ selectedOutput }: { selectedOutput: string }) {
     debouncedSendMessage();
   };
   return (
-    console.log("selectedOutput", selectedOutput),
+    // console.log("selectedOutput", selectedOutput),
     <div className="flex flex-col w-full h-full max-h-screen rounded-lg border-blue-200 border-solid border-2 p-10">
       {/* Messages */}
-      <div className="flex flex-col h-full max-h-[calc(100vh-400px)] overflow-y-auto border-blue-200 border-solid border-2 p-6 rounded-lg">
+      <div className="flex flex-col h-full max-h-[calc(100vh-400px)] main-chat overflow-y-auto border-blue-200 border-solid border-2 p-6 rounded-lg">
         {fetching && <div className="m-auto font-bold">Fetching messages.</div>}
         {!fetching && messages.length === 0 && (
           <div className="m-auto font-bold">No messages found for thread.</div>
@@ -126,6 +181,7 @@ function ChatContainer({ selectedOutput }: { selectedOutput: string }) {
           }
           </div>
         ))}
+         <div ref={chatEndRef} />
       </div>
 
       {/* Input */}

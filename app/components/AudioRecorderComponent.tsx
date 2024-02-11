@@ -40,7 +40,7 @@ const AudioRecorderComponent: React.FC<AudioRecorderComponentProps> = ({ onTrans
         // throw new Error(response);
         console.log("response.status", response.status);
       }
-
+console.log(recPlay);
       const result = await response.json();
       console.log("API Response:", result); // Check the structure of the response
       setTranscription(result.text); // Adjust based on the actual response structure
