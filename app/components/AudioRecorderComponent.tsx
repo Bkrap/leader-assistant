@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import useAudioRecorder from './useAudioRecorder';
 import SpeechGenerator from './SpeechGenerator';
-import recPlay from '../../public/recPlay.png';
+// import recPlay from '../../public/recPlay.png';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -56,9 +56,9 @@ const AudioRecorderComponent: React.FC<AudioRecorderComponentProps> = ({ onTrans
   return (
     <div>
       {isRecording ? (
-        <button style={{ backgroundImage: `url('${recPlay})'` }} onClick={stopRecording}>Stop Recording</button>
+        <button onClick={stopRecording}>Stop Recording</button>
       ) : (
-        <button style={{ backgroundImage: `url('${recPlay})'` }} onClick={startRecording}>Start Recording</button>
+        <button onClick={startRecording}>Start Recording</button>
       )}
       <div>
       {audioUrl && (
