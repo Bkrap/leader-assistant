@@ -1,4 +1,5 @@
 import OpenAI from "openai";
+// cache clean
 
 export async function GET() {
   const openai = new OpenAI({
