@@ -89,7 +89,7 @@ export default function Home() {
         </div>
         {/* Chat */}
         <div className="w-full flex flex-row gap-x-10 items-center">
-          <TalkingAvatar videoUrl={"https://web-throne.org/erstehero.mp4"} />
+          {/* <TalkingAvatar videoUrl={"https://web-throne.org/erstehero.mp4"} /> */}
           <ChatContainer selectedOutput={selectedOutput} />
         </div>
       </div>

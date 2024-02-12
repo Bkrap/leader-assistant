@@ -155,14 +155,14 @@ function ChatContainer({ selectedOutput }: { selectedOutput: string }) {
 
   return (
     // console.log("selectedOutput", selectedOutput),
-    <div className="flex flex-col w-full h-full max-h-screen rounded-lg border-blue-200 border-solid border-2 p-10">
+    <div style={{ maxWidth: "900px" }} className="flex flex-col w-full h-full max-h-screen rounded-lg border-blue-200 border-solid border-2 p-10">
       {/* Messages */}
       <div className="flex flex-col h-full max-h-[calc(100vh-400px)] main-chat overflow-y-auto border-blue-200 border-solid border-2 p-6 rounded-lg">
         {fetching && <div className="m-auto font-bold">Fetching messages.</div>}
         {!fetching && messages.length === 0 && (
           <div className="m-auto font-bold">No messages found for thread.</div>
         )}
-        {messages.map((message) => (
+        {messages.map((message,index) => (
           <div
             key={message.id}
             className={`px-4 py-2 mb-3 rounded-lg text-white w-fit text-lg ${
@@ -171,15 +171,16 @@ function ChatContainer({ selectedOutput }: { selectedOutput: string }) {
                 : " bg-gray-500"
             }`}
           >
-          {(selectedOutput === "text" || selectedOutput === "both") && isMessageContentText(message.content[0]) && (
+          {(selectedOutput === "text" || selectedOutput === "voice") && isMessageContentText(message.content[0]) && (
             <p>{message.content[0].text.value}</p>
           )}
 
-          {(selectedOutput === "voice" || selectedOutput === "both") && isMessageContentText(message.content[0]) && (
-            <SpeechGenerator textData={message.content[0].text.value} />
-          )}
+          {(selectedOutput === "voice") && isMessageContentText(message.content[0]) && (
+                message.role === "user"
+                  ? ""
+                  : <SpeechGenerator textData={message.content[0].text.value} isLast={index === messages.length - 1} />
+              )}
           </div>
-
         ))}
          <div ref={chatEndRef} />
       </div>

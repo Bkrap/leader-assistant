@@ -22,7 +22,6 @@ const Choice: React.FC<ChoiceProps> = ({ selectedOutput, onChange }) => {
       >
         <option value="text">Text</option>
         <option value="voice">Voice</option>
-        <option value="both">Both</option>
       </select>
     </div>
   );

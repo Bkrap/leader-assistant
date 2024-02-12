@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 
 interface SpeechGeneratorProps {
   textData: string;
+  isLast: boolean;
 }
 
-const SpeechGenerator: React.FC<SpeechGeneratorProps> = ({ textData }) => {
+const SpeechGenerator: React.FC<SpeechGeneratorProps> = ({ textData, isLast }) => {
   const [audioSrc, setAudioSrc] = useState<string>('');
 
   const generateSpeech = async () => {
@@ -43,7 +44,7 @@ const SpeechGenerator: React.FC<SpeechGeneratorProps> = ({ textData }) => {
 
   return (
     <div className="generated-audio-result">
-      {audioSrc && <audio src={audioSrc} controls />}
+      {audioSrc && <audio autoPlay={isLast} src={audioSrc} controls />}
     </div>
   );
 };

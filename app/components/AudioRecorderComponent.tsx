@@ -56,9 +56,9 @@ const AudioRecorderComponent: React.FC<AudioRecorderComponentProps> = ({ onTrans
   return (
     <div>
       {isRecording ? (
-        <button onClick={stopRecording}>Stop Recording</button>
+        <button className='start-recording' onClick={stopRecording}>Stop Recording</button>
       ) : (
-        <button onClick={startRecording}>Start Recording</button>
+        <button className='start-recording' onClick={startRecording}>Start Recording</button>
       )}
       <div>
       {audioUrl && (
