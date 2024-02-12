@@ -171,13 +171,13 @@ function ChatContainer({ selectedOutput }: { selectedOutput: string }) {
                 : " bg-gray-500"
             }`}
           >
-          {selectedOutput === "text" && isMessageContentText(message.content[0]) ? (
-            message.content[0].text.value
-          ) : selectedOutput === "voice" || selectedOutput === "both" ? (
-            isMessageContentText(message.content[0]) ? (
-              <SpeechGenerator textData={message.content[0].text.value} />
-            ) : null // Handle non-text message content appropriately
-          ) : null}
+          {(selectedOutput === "text" || selectedOutput === "both") && isMessageContentText(message.content[0]) && (
+            <p>{message.content[0].text.value}</p>
+          )}
+
+          {(selectedOutput === "voice" || selectedOutput === "both") && isMessageContentText(message.content[0]) && (
+            <SpeechGenerator textData={message.content[0].text.value} />
+          )}
           </div>
 
         ))}

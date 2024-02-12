@@ -156,12 +156,13 @@ function Run() {
     <div className="flex flex-col mb-8">
       <h1 className="text-4xl font-semibold mb-4">Run</h1>
       <div className="flex flex-row gap-x-4 w-full flex-wrap flex-col gap-y-2">
-        <Button
+        
+        {/* <Button
           onClick={handleCreate}
           disabled={creating || !assistant || !thread}
         >
           {creating ? "Creating..." : "Create"}
-        </Button>
+        </Button> */}
         <Button
           onClick={handleCancel}
           disabled={["N/A"].includes(runState) || !run}

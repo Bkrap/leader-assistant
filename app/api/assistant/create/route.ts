@@ -7,7 +7,7 @@ export async function GET() {
   });
 
   try {
-    const assistant = await openai.beta.assistants.retrieve('asst_FdXPawOq7irRoLPxbYcKnMtv');
+    const assistant = await openai.beta.assistants.retrieve('asst_ScZzCtZ75zCHYHof4PJW7WCx');
     console.log(assistant);
     return new Response(JSON.stringify({ assistant }), {
       status: 200,
