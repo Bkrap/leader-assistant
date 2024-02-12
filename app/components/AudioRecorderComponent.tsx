@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import useAudioRecorder from './useAudioRecorder';
 import SpeechGenerator from './SpeechGenerator';
+import styles from './Button.module.css';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faMicrophone,
+  faMicrophoneSlash,
+} from "@fortawesome/free-solid-svg-icons";
 // import recPlay from '../../public/recPlay.png';
 import dotenv from 'dotenv';
 
@@ -56,9 +62,12 @@ const AudioRecorderComponent: React.FC<AudioRecorderComponentProps> = ({ onTrans
   return (
     <div>
       {isRecording ? (
-        <button className='start-recording' onClick={stopRecording}>Stop Recording</button>
+        <button className={styles.stopRecord} onClick={stopRecording}>Stop Recording<FontAwesomeIcon
+        icon={faMicrophoneSlash} /></button>
       ) : (
-        <button className='start-recording' onClick={startRecording}>Start Recording</button>
+        <button className={styles.buttonRecord} onClick={startRecording}>Start Recording<FontAwesomeIcon
+        icon={faMicrophone} /></button>
+        
       )}
       <div>
       {audioUrl && (

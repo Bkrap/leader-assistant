@@ -1,0 +1,23 @@
+.buttonRecord {
+    background-color: #1ED052;
+    padding: 10px;
+    border-radius: 20px;
+    color: white;
+    font-weight: 700;
+}
+
+.stopRecord {
+    background-color: #FF8787;
+    padding: 10px;
+    border-radius: 20px;
+    color: white;
+    font-weight: 700;
+}
+
+.buttonRecord svg {
+    margin-left: 10px;
+}
+
+.stopRecord svg {
+    margin-left: 10px;
+}

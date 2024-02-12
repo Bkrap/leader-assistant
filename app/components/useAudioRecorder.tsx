@@ -27,6 +27,19 @@ const useAudioRecorder = () => {
       setIsRecording(true);
     } catch (error) {
       console.error(error);
+      if (error.name === "NotFoundError" || error.name === "DevicesNotFoundError") {
+        // No microphone was found
+        alert("No microphone device was found.");
+      } else if (error.name === "NotAllowedError" || error.name === "PermissionDeniedError") {
+        // Permissions have not been granted to use the microphone
+        alert("Permissions to access the microphone were denied.");
+      } else if (error.name === "NotReadableError" || error.name === "TrackStartError") {
+        // The microphone is already in use
+        alert("The microphone is currently in use by another application.");
+      } else {
+        // Some other error occurred
+        alert("An unknown error occurred when trying to access the microphone.");
+      }
     }
   }, []);
 
