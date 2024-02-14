@@ -64,16 +64,16 @@ function ChatContainer({ selectedOutput }: { selectedOutput: string }) {
       try {
         const response = await axios.get<{ messages: ThreadMessage[] }>(
           `/api/message/list?threadId=${thread.id}`
-        );
+        ).then((response) => {
+          // Now access the `messages` property from `response.data`
+          const sortedMessages = response.data.messages.sort(
+            (a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+          );
+    
+          setMessages(sortedMessages);
+        });
   
-        // Now access the `messages` property from `response.data`
-          if( response.data.messages.length > 0 ) {          
-            const sortedMessages = response.data.messages.sort(
-              (a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
-            );
-      
-            setMessages(sortedMessages);
-          }
+
   
       // Check if there are any messages to process / talks / generate avatar
       // if (sortedMessages.length > 0) {
