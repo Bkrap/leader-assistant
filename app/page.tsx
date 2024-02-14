@@ -58,7 +58,9 @@ export default function Home() {
         }
         const localThread = localStorage.getItem("thread");
         if (localThread) {
-          setThread(JSON.parse(localThread));
+          if( localThread != undefined ) {
+            setThread(JSON.parse(localThread));
+          }
         }
         const localRun = localStorage.getItem("run");
         if (localRun) {

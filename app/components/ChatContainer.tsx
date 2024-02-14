@@ -164,7 +164,8 @@ function ChatContainer({ selectedOutput }: { selectedOutput: string }) {
         {!fetching && messages.length === 0 && (
           <div className="m-auto font-bold">No messages found for thread.</div>
         )}
-        {messages.map((message) => (
+        {messages.length > 0 && (
+        messages.map((message) => (
           <div
             key={message.id}
             className={`px-4 py-2 mb-3 rounded-lg text-white w-fit text-lg ${
@@ -182,7 +183,9 @@ function ChatContainer({ selectedOutput }: { selectedOutput: string }) {
           )}
           </div>
 
-        ))}
+        ))
+        )}
+
          <div ref={chatEndRef} />
       </div>
 
