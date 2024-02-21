@@ -9,6 +9,7 @@ import { debounce } from "lodash";
 import AudioRecorderComponent from "./AudioRecorderComponent";
 import { avatarUrlAtom } from '../state/atoms';
 import { runTriggerAtom } from '../state/atoms';
+import styles from './chatContainer.module.css';
 
 // import { fetchAvatar } from './fetchAvatar'; 
 import Choice from "./Choice";
@@ -64,14 +65,16 @@ function ChatContainer({ selectedOutput }: { selectedOutput: string }) {
       try {
         const response = await axios.get<{ messages: ThreadMessage[] }>(
           `/api/message/list?threadId=${thread.id}`
-        );
+        ).then((response) => {
+          // Now access the `messages` property from `response.data`
+          const sortedMessages = response.data.messages.sort(
+            (a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+          );
+    
+          setMessages(sortedMessages);
+        });
   
-        // Now access the `messages` property from `response.data`
-        const sortedMessages = response.data.messages.sort(
-          (a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
-        );
-  
-        setMessages(sortedMessages);
+
   
       // Check if there are any messages to process / talks / generate avatar
       // if (sortedMessages.length > 0) {
@@ -155,33 +158,37 @@ function ChatContainer({ selectedOutput }: { selectedOutput: string }) {
 
   return (
     // console.log("selectedOutput", selectedOutput),
-    <div style={{ maxWidth: "900px" }} className="flex flex-col w-full h-full max-h-screen rounded-lg border-blue-200 border-solid border-2 p-10">
+    <div style={{ maxWidth: "900px" }} className={ styles.mainChatWrap + " flex flex-col w-full h-full max-h-screen rounded-lg border-blue-200 border-solid border-2 p-10"}>
       {/* Messages */}
-      <div className="flex flex-col h-full max-h-[calc(100vh-400px)] main-chat overflow-y-auto border-blue-200 border-solid border-2 p-6 rounded-lg">
+      <div className={styles.mainChat + " flex flex-col h-full max-h-[calc(100vh-400px)] main-chat overflow-y-auto border-blue-200"}>
         {fetching && <div className="m-auto font-bold">Fetching messages.</div>}
         {!fetching && messages.length === 0 && (
           <div className="m-auto font-bold">No messages found for thread.</div>
         )}
-        {messages.map((message,index) => (
-          <div
-            key={message.id}
-            className={`px-4 py-2 mb-3 rounded-lg text-white w-fit text-lg ${
-              message.role === "user"
-                ? " bg-blue-500 ml-auto text-right"
-                : " bg-gray-500"
-            }`}
-          >
-          {(selectedOutput === "text" || selectedOutput === "voice") && isMessageContentText(message.content[0]) && (
-            <p>{message.content[0].text.value}</p>
-          )}
-
-          {(selectedOutput === "voice") && isMessageContentText(message.content[0]) && (
-                message.role === "user"
-                  ? ""
-                  : <SpeechGenerator textData={message.content[0].text.value} isLast={index === messages.length - 1} />
-              )}
+        
+          <div style={{ maxWidth: "900px" }} className="flex flex-col w-full h-full max-h-screen rounded-lg">
+            {/* Messages */}
+            <div className={styles.insideChat + " main-chat"}>
+              {fetching && <div className="m-auto font-bold">Fetching messages.</div>}
+                {messages.map((message, index) => (
+                  <div
+                  style={{ maxWidth: "70%" }}
+                    key={message.id}
+                    className={`px-4 py-2 mb-3 rounded-lg text-white w-fit text-lg ${
+                      message.role === "user" ? " bg-blue-500 ml-auto text-right" : " bg-gray-500"
+                    }`}
+                  >
+                    {(selectedOutput === "text" || selectedOutput === "voice") && isMessageContentText(message.content[0]) && (
+                      <div>{message.content[0].text.value}</div>
+                    )}
+                    {selectedOutput === "voice" && isMessageContentText(message.content[0]) && (
+                      message.role === "user" ? "" : <SpeechGenerator textData={message.content[0].text.value} isLast={index === messages.length - 1} />
+                    )}
+                  </div>
+                ))}
+            </div>
           </div>
-        ))}
+
          <div ref={chatEndRef} />
       </div>
 
