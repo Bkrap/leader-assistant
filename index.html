@@ -1,0 +1,116 @@
+<!doctype html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="index.css" />
+    <link rel="icon" href="./favicon.ico" />
+  </head>
+
+  <style>
+    .videoWrap {
+      width: 50%;
+      background-size: 1200px 800px;
+      background: right center;
+      background-repeat: no-repeat;
+      background-image: url("https://www.avlprojekt.rs/images/gallery/Xlarge/Foto1_Erste_Banka-z2ad.jpg");
+    }
+
+    .videoEle {
+      max-height: unset !important;
+    }
+  </style>
+
+  <body>
+    <div class="main">
+
+      <div class="assistantActionsWrap">
+        <button id="createThread" style="display: none;">Create Thread</button>
+        <button id="runAssistant" style="display: none;">Run</button>
+      </div>
+
+      <div class="actionRowsWrap container-fluid">
+        <div class="actionRow actionBtns">
+          <label style="display:none;">
+            AvatarName
+            <input id="avatarName" type="text" />
+          </label>
+
+          <label style="display:none;">
+            VoiceID
+            <input id="voiceID" type="text" />
+          </label>
+
+          <button id="newBtn">Create Session</button>
+          <button id="startBtn">Initialize MrErste</button>
+          <button id="closeBtn">Close MrErste Session</button>
+        </div>
+
+        <div class="mainActionContainer">
+          <div class="actionContainer row">
+            <div class="videoSectionWrap col-12 col-md-6">
+              <div class="videoWrap">
+                <video id="mediaElement" class="videoEle show" autoplay></video>
+                <canvas id="canvasElement" class="videoEle hide"></canvas>
+              </div>
+      
+              <div class="actionRow switchRow hide" id="bgCheckboxWrap">
+                <div class="switchWrap">
+                  <span>Remove background</span>
+                  <label class="switch">
+                    <input type="checkbox" id="removeBGCheckbox" />
+                    <span class="slider round"></span>
+                  </label>
+                </div>
+      
+                <label>
+                  Background (CSS)
+                  <input
+                    type="text"
+                    id="bgInput"
+                    value=''
+                  />
+                </label> 
+      
+              </div>
+            </div>
+            <div class="actionRow messageInputWrap col-12 col-md-6">
+              <p>Chat Container</p>
+              <div class="chatBoxWrap" id="chatBoxWrap">
+                <div id="chatbox"></div>
+              </div>
+              <input type="text" placeholder="e.g. What is MrErste main focus?" class="w-100" name="taskInput" id="taskInput" />
+              <button id="repeatBtn" style="display:none;">Repeat</button>
+              <div class="col-12" id="talkBtns">
+                <button id="talkBtn">Talk</button>
+                <button id="createAssistant">Talk with MrErste</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="container-fluid">
+        <p id="status"></p>
+      </div>
+
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script>
+      // var isLocalhost = window.location.hostname === 'localhost';
+
+      // if (isLocalhost) {
+      //   // Code to execute when running on localhost
+      //   var BASE_URL = 'http://localhost:3000/';
+      // } else {
+      //   // Code to execute when not running on localhost
+      //   var BASE_URL = 'https://erstehero-node.vercel.app/';
+      // }
+    </script>
+    <script type="module" src="index.js"></script>
+
+  </body>
+</html>

@@ -1,36 +1,54 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Streaming Avatar Demo
 
-## Getting Started
+## Pre-Requisites
 
-First, run the development server:
+- **_Apply for becoming a Streaming avatar whitelist user_**
+- Node.js and npm installed on your system.
+- API key for HeyGen's API.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Run the Demo
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+1. Clone the repository.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+   ```
+   git clone https://github.com/HeyGen-Official/StreamingAvatar.git
+   ```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+2. Open the `index.js` file and replace `'YourApiKey'` with your API key:
 
-## Learn More
+   ```
+   "apiKey": "YourApiKey";
+   ```
+3. (optional) Open the `server.js` file and set your OpenAI API key to use talk mode:
+   ```
+   const openai = new OpenAI({
+     apiKey: "<your openai api key>",
+   });
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+4. open a terminal in the folder and then install the express and run the server.js:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+   ```
+   npm install express
+   node server.js
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+5. you will see `App is listening on port 3000!`.
 
-## Deploy on Vercel
+## Use the Demo
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+0. Make sure you are whitelisted to use the HeyGen's Streaming avatar API.
+1. Open the web browser and enter the `http://localhost:3000`to start the demo.
+2. Click the "New" button to create a new session. The status updates will be displayed on the screen.
+3. After the session is created successfully, click the "Start" button to start streaming the avatar.
+4. To send a task to the avatar, type the text in the provided input field and click the "Repeat Text" button.
+5. In order to use Talk mode, set your **OpenAI** key in **server.js** before starting the server and click "Talk" button
+6. Once done, click the "Close Connection" button to close the session.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Remember, this is a demo and should be modified according to your needs and preferences. Happy coding!
+
+## Troubleshooting
+
+In case you face any issues while running the demo or have any questions, feel free to raise an issue in this repository or contact our support team.
+
+Please note, if you encounter a "Server Error", it could be due to the server being offline. In such cases, please contact the service provider.
