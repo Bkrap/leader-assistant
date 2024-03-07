@@ -14,7 +14,7 @@ app.get('/assistant/create', async (req, res) => {
   });
 
   try {
-    const assistant = await openai.beta.assistants.retrieve('asst_FdXPawOq7irRoLPxbYcKnMtv');
+    const assistant = await openai.beta.assistants.retrieve('asst_nzCHMuob0o95oai9lMKMl6IC');
     console.log(assistant);
 
     res.status(200).json(assistant);
